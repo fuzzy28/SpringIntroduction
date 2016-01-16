@@ -4,23 +4,77 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
-                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
-
-	<bean id="customer" class="org.jrue.spring.model.Customer">
-		<property name="firstName" value="Joel" />
-		<property name="lastName" value="Ruelos" />
-		<property name="birthday" value="19920628" />
-		<property name="currentAddress" ref="address" />
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+                        
+    default-init-method="initMethod" default-destroy-method="destroyMethod">
+	<context:component-scan base-package="org.jrue.spring.model" />
+	<context:component-scan base-package="org.jrue.spring.config" />
+	<util:properties id="I18n" location="property.properties" />
+	<bean id="customer" class="org.jrue.spring.model.Customer" 
+		p:birthday="19920628">
+		<constructor-arg value="#{I18n['lbl.name'] + 'JOEL'}" />
+		<constructor-arg value="RUELOS"  />
+		
+		<property name="message" value="#{customer.sayHi()?.toUpperCase() + T(org.jrue.spring.util.Constants).SAYHELLO}"/>
+		<property name="PIvalue" value="#{T(java.lang.Math).PI}"></property>
+<!-- 		<property name="globalMessage" value="#{systemProperties['global.message']}"/> -->
+		<property name="hobbies">
+			<list>
+				<value>Surfing</value>
+				<value>Reading Programming books</value>
+				<value>Playing guitar</value>
+				<value>Playing guitar</value>
+			</list>
+		</property>
+		<property name="booksread">
+			<props>
+				<prop key="Head First Design Pattern">Head First</prop>
+				<prop key="Spring in action">Spring</prop>
+			</props>	
+		</property>
 	</bean>
 	
-	<bean id="address" class="org.jrue.spring.model.Address">
+	<bean id="currentAddress3" class="org.jrue.spring.model.Address">
 		<property name="unitNo" value="934" />
 		<property name="streetName" value="Busilak" />
 		<property name="districtName" value="Barangka" />
 		<property name="city" value="Mandaluyong City" />
 		<property name="zipCode" value="1550" />
-		<property name="country" value="Philippines" />		
+		<property name="country" value="Philippines" />
+	</bean>
+
+	<bean id="currentAddress2" class="org.jrue.spring.model.Address">
+		<property name="unitNo" value="935" />
+		<property name="streetName" value="Busilak" />
+		<property name="districtName" value="Barangka" />
+		<property name="city" value="Mandaluyong City" />
+		<property name="zipCode" value="1550" />
+		<property name="country" value="Philippines" />
 	</bean>
 	
-</beans>
+	<bean id="jingleBells" class="org.jrue.spring.model.Sing">
+		<constructor-arg value="Jingle Bells"/>
+	</bean>
+	
+	<bean id="twinkle" class="org.jrue.spring.model.Sing">
+		<constructor-arg value="Twinkle Twinkle little Star"/>
+	</bean>
+	
+	<util:list id="cities">
+		<bean id="makati" class="org.jrue.spring.model.City" 
+			p:name="Makati" p:population="300"/>
+		<bean id="manila" class="org.jrue.spring.model.City" 
+			p:name="Manila" p:population="100"/>
+		<bean id="mandaluyong" class="org.jrue.spring.model.City" 
+			p:name="Mandaluyong" p:population="200"/>
+		<bean id="pasay" class="org.jrue.spring.model.City" 
+			p:name="Pasay" p:population="400"/>		
+	</util:list>
+
+	</beans>
+	
