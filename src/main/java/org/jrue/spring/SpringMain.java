@@ -7,6 +7,7 @@ import java.util.Set;
 import org.jrue.spring.model.City;
 import org.jrue.spring.model.Customer;
 import org.jrue.spring.model.Statistics;
+import org.jrue.spring.model.Student;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -29,6 +30,9 @@ public class SpringMain {
 //		System.out.println(customer.getPIvalue());
 //		customer.doPerform();
 //		System.out.println(customer.getGlobalMessage());
+		
+		Student student = context.getBean("student",Student.class);
+		student.setName("Joel Ruelos");
 
 		
 		System.out.println("Printing big cities");

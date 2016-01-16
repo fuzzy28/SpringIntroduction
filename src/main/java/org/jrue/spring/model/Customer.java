@@ -35,6 +35,10 @@ public class Customer implements  BeanNameAware,BeanFactoryAware, ApplicationCon
 	@Value("#{systemProperties['global.message']}")
 	private String globalMessage;
 	
+	public Customer() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Customer(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;

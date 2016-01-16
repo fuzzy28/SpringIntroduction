@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class Statistics {
 	@Value("#{cities.?[population ge 200]}")
 	private List<City> bigCities;

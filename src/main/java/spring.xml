@@ -12,17 +12,22 @@
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
                         
     default-init-method="initMethod" default-destroy-method="destroyMethod">
+
 	<context:component-scan base-package="org.jrue.spring.model" />
 	<context:component-scan base-package="org.jrue.spring.config" />
+	<context:component-scan base-package="org.jrue.spring.aspects" />
+	<context:component-scan base-package="org.jrue.spring.util" />
+		
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	<util:properties id="I18n" location="property.properties" />
 	<bean id="customer" class="org.jrue.spring.model.Customer" 
 		p:birthday="19920628">
 		<constructor-arg value="#{I18n['lbl.name'] + 'JOEL'}" />
 		<constructor-arg value="RUELOS"  />
 		
-		<property name="message" value="#{customer.sayHi()?.toUpperCase() + T(org.jrue.spring.util.Constants).SAYHELLO}"/>
+<!-- 		<property name="message" value="#{customer.sayHi()?.toUpperCase() + T(org.jrue.spring.util.Constants).SAYHELLO}"/> -->
 		<property name="PIvalue" value="#{T(java.lang.Math).PI}"></property>
-<!-- 		<property name="globalMessage" value="#{systemProperties['global.message']}"/> -->
+		<property name="globalMessage" value="#{systemProperties['global.message']}"/>
 		<property name="hobbies">
 			<list>
 				<value>Surfing</value>
@@ -75,6 +80,14 @@
 		<bean id="pasay" class="org.jrue.spring.model.City" 
 			p:name="Pasay" p:population="400"/>		
 	</util:list>
+	
+	<bean id="loggerAspect" class="org.jrue.spring.aspects.LoggerAspect"/>
+
+	<aop:config>
+		<aop:aspect id="statisticLoggerAspect" ref="loggerAspect">
+			<aop:around pointcut="execution(* org.jrue.spring.model.Statistics.get*())" method="calculateElapseTime"/>
+		</aop:aspect>
+	</aop:config>
 
 	</beans>
 	
